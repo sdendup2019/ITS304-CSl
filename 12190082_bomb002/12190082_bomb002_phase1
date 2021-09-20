@@ -6,9 +6,9 @@ Breakpoint 1 at 0x400e8d
 Breakpoint 2 at 0x401438
 (gdb) disas phase_1
 Dump of assembler code for function phase_1:
-   0x0000000000400e8d <+0>:	sub    $0x8,%rsp
-   0x0000000000400e91 <+4>:	mov    $0x4023cc,%esi
-   0x0000000000400e96 <+9>:	callq  0x401339 <strings_not_equal>
+   0x0000000000400e8d <+0>:	sub    $0x8,%rsp     //building stack frame with 8 more bytes
+   0x0000000000400e91 <+4>:	mov    $0x4023cc,%esi   //what is this being moved?
+   0x0000000000400e96 <+9>:	callq  0x401339 <strings_not_equal>   //what is this being moved?
    0x0000000000400e9b <+14>:	test   %eax,%eax
    0x0000000000400e9d <+16>:	je     0x400ea4 <phase_1+23>
    0x0000000000400e9f <+18>:	callq  0x401438 <explode_bomb>
@@ -47,7 +47,7 @@ Dump of assembler code for function phase_1:
    0x0000000000400ea8 <+27>:	retq   
 End of assembler dump.
 (gdb) i r
-rax            0x1                 1
+rax            0x1                 1            //will call the bomb as 1&1 will not give back zero
 rbx            0x4021f0            4202992
 rcx            0x5                 5
 rdx            0x1                 1
@@ -98,8 +98,8 @@ Dump of assembler code for function phase_1:
    0x0000000000400ea4 <+23>:	add    $0x8,%rsp
    0x0000000000400ea8 <+27>:	retq   
 End of assembler dump.
-(gdb) x/s 0x4023cc
-0x4023cc:	"Public speaking is very easy."
+(gdb) x/s 0x4023cc    
+0x4023cc:	"Public speaking is very easy."     // this string is being moved into %esi, and will be passed into <strings_not_equal>.
 (gdb) delete
 Delete all breakpoints? (y or n) y
 (gdb) b phase_2
@@ -112,6 +112,6 @@ Start it from the beginning? (y or n) y
 Starting program: /home/sonam/Desktop/bomb002/bomb 
 Welcome to my fiendish little bomb. You have 6 phases with
 which to blow yourself up. Have a nice day!
-Public speaking is very easy.
+Public speaking is very easy.   //So solution is 'Public speaking is very easy'
 Phase 1 defused. How about the next one?
 1 2 3 4 5 6
