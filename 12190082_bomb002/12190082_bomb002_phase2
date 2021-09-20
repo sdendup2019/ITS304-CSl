@@ -6,12 +6,12 @@ Breakpoint 3, 0x0000000000400ea9 in phase_2 ()
 Dump of assembler code for function phase_2:
 => 0x0000000000400ea9 <+0>:	push   %rbp
    0x0000000000400eaa <+1>:	push   %rbx
-   0x0000000000400eab <+2>:	sub    $0x28,%rsp
+   0x0000000000400eab <+2>:	sub    $0x28,%rsp  //makes a stack frame of 56 bytes
    0x0000000000400eaf <+6>:	mov    %fs:0x28,%rax
    0x0000000000400eb8 <+15>:	mov    %rax,0x18(%rsp)
    0x0000000000400ebd <+20>:	xor    %eax,%eax
    0x0000000000400ebf <+22>:	mov    %rsp,%rsi
-   0x0000000000400ec2 <+25>:	callq  0x40145a <read_six_numbers>
+   0x0000000000400ec2 <+25>:	callq  0x40145a <read_six_numbers>  //We see that this phase wants an input of 6 numbers.
    0x0000000000400ec7 <+30>:	cmpl   $0x1,(%rsp)
    0x0000000000400ecb <+34>:	je     0x400ed2 <phase_2+41>
    0x0000000000400ecd <+36>:	callq  0x401438 <explode_bomb>
@@ -19,18 +19,18 @@ Dump of assembler code for function phase_2:
    0x0000000000400ed5 <+44>:	lea    0x14(%rsp),%rbp
    0x0000000000400eda <+49>:	mov    (%rbx),%eax
    0x0000000000400edc <+51>:	add    %eax,%eax
-   0x0000000000400ede <+53>:	cmp    %eax,0x4(%rbx)
+   0x0000000000400ede <+53>:	cmp    %eax,0x4(%rbx)   // We are comparing something here!
    0x0000000000400ee1 <+56>:	je     0x400ee8 <phase_2+63>
    0x0000000000400ee3 <+58>:	callq  0x401438 <explode_bomb>
    0x0000000000400ee8 <+63>:	add    $0x4,%rbx
-   0x0000000000400eec <+67>:	cmp    %rbp,%rbx
+   0x0000000000400eec <+67>:	cmp    %rbp,%rbx     //Comparing something here!
    0x0000000000400eef <+70>:	jne    0x400eda <phase_2+49>
    0x0000000000400ef1 <+72>:	mov    0x18(%rsp),%rax
 --Type <RET> for more, q to quit, c to continue without paging--c
    0x0000000000400ef6 <+77>:	xor    %fs:0x28,%rax
    0x0000000000400eff <+86>:	je     0x400f06 <phase_2+93>
    0x0000000000400f01 <+88>:	callq  0x400b00 <__stack_chk_fail@plt>
-   0x0000000000400f06 <+93>:	add    $0x28,%rsp
+   0x0000000000400f06 <+93>:	add    $0x28,%rsp    // closing the stack frame
    0x0000000000400f0a <+97>:	pop    %rbx
    0x0000000000400f0b <+98>:	pop    %rbp
    0x0000000000400f0c <+99>:	retq   
@@ -715,6 +715,10 @@ Dump of assembler code for function phase_2:
    0x0000000000400f0c <+99>:	retq   
 End of assembler dump.
 (gdb) ni
+
+//Looking at <+30>, we see we are essentially doubling whatever was in %eax before when %eax = 4, which was 2. lets change our input to 
+//"1 2 4 5 6 7" to see if we can pass this iteration for 4. ==> when we do this, adding 4 DOES pass this iteration of the loop. At this
+//point, we can see at <+30> that we are doubling the previous %eax each time. So assuming this, lets try "1 2 4 8 16 32" as our input
 
 Breakpoint 4, 0x0000000000401438 in explode_bomb ()
 (gdb) delete
