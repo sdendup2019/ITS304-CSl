@@ -8,8 +8,8 @@ Dump of assembler code for function phase_4:
    0x0000000000401020 <+18>:	xor    %eax,%eax
    0x0000000000401022 <+20>:	mov    %rsp,%rcx
    0x0000000000401025 <+23>:	lea    0x4(%rsp),%rdx
-   0x000000000040102a <+28>:	mov    $0x4025b7,%esi
-   0x000000000040102f <+33>:	callq  0x400bb0 <__isoc99_sscanf@plt>
+   0x000000000040102a <+28>:	mov    $0x4025b7,%esi    
+   0x000000000040102f <+33>:	callq  0x400bb0 <__isoc99_sscanf@plt>  
    0x0000000000401034 <+38>:	cmp    $0x2,%eax
    0x0000000000401037 <+41>:	jne    0x401044 <phase_4+54>
    0x0000000000401039 <+43>:	mov    (%rsp),%eax
@@ -53,20 +53,20 @@ Dump of assembler code for function phase_4:
    0x0000000000401020 <+18>:	xor    %eax,%eax
    0x0000000000401022 <+20>:	mov    %rsp,%rcx
    0x0000000000401025 <+23>:	lea    0x4(%rsp),%rdx
-   0x000000000040102a <+28>:	mov    $0x4025b7,%esi
-   0x000000000040102f <+33>:	callq  0x400bb0 <__isoc99_sscanf@plt>
-   0x0000000000401034 <+38>:	cmp    $0x2,%eax
-   0x0000000000401037 <+41>:	jne    0x401044 <phase_4+54>
-   0x0000000000401039 <+43>:	mov    (%rsp),%eax
-   0x000000000040103c <+46>:	sub    $0x2,%eax
-   0x000000000040103f <+49>:	cmp    $0x2,%eax
-   0x0000000000401042 <+52>:	jbe    0x401049 <phase_4+59>
+   0x000000000040102a <+28>:	mov    $0x4025b7,%esi  //this instruction read the input formate which it accept 2 integers "%d,%d"
+   0x000000000040102f <+33>:	callq  0x400bb0 <__isoc99_sscanf@plt> //input 1 and 2
+   0x0000000000401034 <+38>:	cmp    $0x2,%eax        //compare value 2 with the value which is store in register %eax(eax=2)
+   0x0000000000401037 <+41>:	jne    0x401044 <phase_4+54> // if 2 and value of eax is not equal, then it will jump to line 54 and explode.
+   0x0000000000401039 <+43>:	mov    (%rsp),%eax   // our second user input(that is 2) is move to %eax register.
+   0x000000000040103c <+46>:	sub    $0x2,%eax // here 2 is substracted from %eax, now 2-2=0.
+   0x000000000040103f <+49>:	cmp    $0x2,%eax  //2 is compare with the value of eax(0)
+   0x0000000000401042 <+52>:	jbe    0x401049 <phase_4+59>  //ince 0 is less then 2 , it will jump to +59 address. Here second term is found.
    0x0000000000401044 <+54>:	callq  0x401438 <explode_bomb>
-   0x0000000000401049 <+59>:	mov    (%rsp),%esi
-   0x000000000040104c <+62>:	mov    $0x5,%edi
+   0x0000000000401049 <+59>:	mov    (%rsp),%esi    //value of reister %rsp is stored in register %esi
+   0x000000000040104c <+62>:	mov    $0x5,%edi     //value 5 is move and store in register %edi
    0x0000000000401051 <+67>:	callq  0x400fd3 <func4>
-   0x0000000000401056 <+72>:	cmp    0x4(%rsp),%eax
-   0x000000000040105a <+76>:	je     0x401061 <phase_4+83>
+   0x0000000000401056 <+72>:	cmp    0x4(%rsp),%eax    //first input is compared with value of %eax(24)
+   0x000000000040105a <+76>:	je     0x401061 <phase_4+83>  // if the value of  0x4(%rsp) is equal to %eax, first term is being found
    0x000000000040105c <+78>:	callq  0x401438 <explode_bomb>
    0x0000000000401061 <+83>:	mov    0x8(%rsp),%rax
 --Type <RET> for more, q to quit, c to continue without paging--
@@ -110,14 +110,14 @@ Dump of assembler code for function phase_4:
    0x000000000040107a <+108>:	retq   
 End of assembler dump.
 (gdb) i r
-rax            0x2                 2
+rax            0x2                 2       //eax=2
 rbx            0x7fffffffdf28      140737488346920
 rcx            0x0                 0
 rdx            0x7fffffffde10      140737488346640
 rsi            0x0                 0
 rdi            0x7fffffffd7c0      140737488345024
 rbp            0x0                 0x0
-rsp            0x7fffffffde10      0x7fffffffde10
+rsp            0x7fffffffde10      0x7fffffffde10   //reads a user input from reverse order: x/d 0x7fffffffffde10 =2 and 0x7fffffffffde10 =1
 r8             0xffffffff          4294967295
 r9             0x0                 0
 r10            0x7ffff7f61ac0      140737353489088
@@ -151,8 +151,8 @@ Dump of assembler code for function phase_4:
    0x0000000000401037 <+41>:	jne    0x401044 <phase_4+54>
    0x0000000000401039 <+43>:	mov    (%rsp),%eax
    0x000000000040103c <+46>:	sub    $0x2,%eax
-=> 0x000000000040103f <+49>:	cmp    $0x2,%eax
-   0x0000000000401042 <+52>:	jbe    0x401049 <phase_4+59>
+=> 0x000000000040103f <+49>:	cmp    $0x2,%eax       //compare 2 with the value of register %eax(0)
+   0x0000000000401042 <+52>:	jbe    0x401049 <phase_4+59>  //since o is less than 2, it will directly jump to line 59. Else it will explodes.
    0x0000000000401044 <+54>:	callq  0x401438 <explode_bomb>
    0x0000000000401049 <+59>:	mov    (%rsp),%esi
    0x000000000040104c <+62>:	mov    $0x5,%edi
@@ -242,9 +242,9 @@ Dump of assembler code for function phase_4:
    0x0000000000401049 <+59>:	mov    (%rsp),%esi
    0x000000000040104c <+62>:	mov    $0x5,%edi
    0x0000000000401051 <+67>:	callq  0x400fd3 <func4>
-=> 0x0000000000401056 <+72>:	cmp    0x4(%rsp),%eax
+=> 0x0000000000401056 <+72>:	cmp    0x4(%rsp),%eax       //compare the value of eax(which is 24) is compared with the first inpput that is 1.
    0x000000000040105a <+76>:	je     0x401061 <phase_4+83>
-   0x000000000040105c <+78>:	callq  0x401438 <explode_bomb>
+   0x000000000040105c <+78>:	callq  0x401438 <explode_bomb> //since it doesn't fulfil the above condition, it leads to explode bomb. Therefore, from here we can find that the answer will be 24 and 2. lets execute it to verify.
    0x0000000000401061 <+83>:	mov    0x8(%rsp),%rax
 --Type <RET> for more, q to quit, c to continue without paging--
    0x0000000000401066 <+88>:	xor    %fs:0x28,%rax
@@ -253,8 +253,8 @@ Dump of assembler code for function phase_4:
    0x0000000000401076 <+104>:	add    $0x18,%rsp
    0x000000000040107a <+108>:	retq   
 End of assembler dump.
-(gdb) i r
-rax            0x18                24
+(gdb) i r       
+rax            0x18                24          //%eax=24
 rbx            0x7fffffffdf28      140737488346920
 rcx            0x0                 0
 rdx            0x7fffffffde10      140737488346640
