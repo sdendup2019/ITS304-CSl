@@ -1,7 +1,5 @@
 (gdb) b phase_4
 Breakpoint 4 at 0x40100e
-(gdb) disas
-No frame selected.
 (gdb) disas phase_4
 Dump of assembler code for function phase_4:
    0x000000000040100e <+0>:	sub    $0x18,%rsp
@@ -281,20 +279,7 @@ es             0x0                 0
 fs             0x0                 0
 --Type <RET> for more, q to quit, c to continue without paging--
 gs             0x0                 0
-(gdb) r sol.txt
-The program being debugged has been started already.
-Start it from the beginning? (y or n) y
-Starting program: /home/sonam/Downloads/Assignment 1_2 (1)/Assignment 1/bomb002/bomb sol.txt
-Welcome to my fiendish little bomb. You have 6 phases with
-which to blow yourself up. Have a nice day!
-Phase 1 defused. How about the next one?
-1 2 4 8 16 32
-That's number 2.  Keep going!
-1 4294966790
-Halfway there!
-24 2
 
-Breakpoint 4, 0x000000000040100e in phase_4 ()
 (gdb) d
 Delete all breakpoints? (y or n) y
 (gdb) r sol.txt
