@@ -280,6 +280,11 @@ fs             0x0                 0
 --Type <RET> for more, q to quit, c to continue without paging--
 gs             0x0                 0
 
+(gdb) x/d  0x7fffffffde10
+0x7fffffffe3a0: 2
+(gdb) x/2d  0x7fffffffde10
+0x7fffffffe3a0: 2       1
+
 (gdb) d
 Delete all breakpoints? (y or n) y
 (gdb) r sol.txt
